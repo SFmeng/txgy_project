@@ -1,0 +1,7 @@
+-r base.txt
+
+# 生产环境专用依赖
+gunicorn==21.2.0
+gevent==23.9.1
+psycopg2-binary==2.9.7
+whitenoise==6.6.0

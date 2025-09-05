@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>菜单创建自动分配测试</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        .title {
+            color: #2d3748;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2em;
+            font-weight: 700;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+        .test-title {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+        }
+        .btn-warning {
+            background: linear-gradient(135deg, #ed8936, #dd6b20);
+        }
+        .steps {
+            counter-reset: step-counter;
+            list-style: none;
+            padding: 0;
+        }
+        .steps li {
+            counter-increment: step-counter;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid #48bb78;
+            position: relative;
+        }
+        .steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: -12px;
+            top: 12px;
+            background: #48bb78;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .highlight {
+            background: linear-gradient(135deg, #fef5e7, #fed7aa);
+            border: 2px solid #f6ad55;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #744210;
+        }
+        .code {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">🔧 菜单创建自动分配功能测试</h1>
+        
+        <div class="test-section">
+            <h3 class="test-title">📋 测试说明</h3>
+            <p>本页面用于测试菜单管理中新增菜单后，是否能自动分配给当前用户的角色，并在侧边栏中立即显示。</p>
+        </div>
+
+        <div class="highlight">
+            <strong>🔑 登录信息:</strong><br>
+            用户名: <code>admin</code><br>
+            密码: <code>admin123456</code><br>
+            角色: 超级管理员
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">🚀 快速访问</h3>
+            <a href="http://localhost:3001/admin" class="btn btn-success" target="_blank">
+                🏠 管理后台首页
+            </a>
+            <a href="http://localhost:3001/admin/menus" class="btn" target="_blank">
+                🌲 菜单管理页面
+            </a>
+            <a href="http://localhost:3001/auth/login" class="btn btn-warning" target="_blank">
+                🔑 重新登录
+            </a>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">📝 测试步骤</h3>
+            <ol class="steps">
+                <li><strong>重新登录:</strong> 点击"重新登录"按钮，使用admin账号重新登录，确保获取最新的用户角色信息</li>
+                <li><strong>查看当前菜单:</strong> 登录后进入管理后台，观察左侧菜单栏的当前菜单项</li>
+                <li><strong>进入菜单管理:</strong> 点击左侧菜单的"菜单管理"或直接访问菜单管理页面</li>
+                <li><strong>创建测试菜单:</strong> 
+                    <ul style="margin-top: 10px;">
+                        <li>点击"新增菜单"按钮</li>
+                        <li>填写菜单信息：
+                            <div class="code">
+菜单名称: 测试菜单
+路由路径: /test-menu
+组件路径: TestMenu
+菜单图标: TestTube
+排序号: 999
+终端类型: 电脑端
+是否显示: 是
+外部链接: 否
+                            </div>
+                        </li>
+                        <li>点击"确定"保存菜单</li>
+                    </ul>
+                </li>
+                <li><strong>观察侧边栏变化:</strong> 菜单创建成功后，立即观察左侧菜单栏是否出现了新的"测试菜单"项</li>
+                <li><strong>验证自动分配:</strong> 如果菜单出现，说明自动分配功能正常工作</li>
+                <li><strong>清理测试数据:</strong> 删除测试菜单，观察侧边栏是否同步更新</li>
+            </ol>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">🔍 问题排查</h3>
+            <p><strong>如果新菜单没有自动出现在侧边栏，可能的原因：</strong></p>
+            <ul>
+                <li>用户角色信息没有正确加载</li>
+                <li>自动分配逻辑没有执行</li>
+                <li>菜单刷新机制没有触发</li>
+                <li>角色菜单分配API调用失败</li>
+            </ul>
+            
+            <p><strong>排查方法：</strong></p>
+            <ul>
+                <li>打开浏览器开发者工具，查看Console日志</li>
+                <li>查看Network面板，确认API调用是否成功</li>
+                <li>检查用户Profile API是否返回了角色信息</li>
+                <li>验证菜单分配API是否被正确调用</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">🛠️ 技术实现</h3>
+            <p><strong>自动分配逻辑：</strong></p>
+            <div class="code">
+// 在菜单创建成功后
+const response = await request({
+  url: '/organization/menus/',
+  method: 'post',
+  data: menuForm
+})
+
+// 自动分配新菜单给当前用户的角色
+if (response.data && response.data.menu_id) {
+  await autoAssignMenuToUserRoles(response.data.menu_id)
+}
+
+// 刷新全局菜单
+menuStore.refreshMenus()
+            </div>
+            
+            <p><strong>关键API调用：</strong></p>
+            <ul>
+                <li><code>GET /api/v1/auth/profile/</code> - 获取用户角色信息</li>
+                <li><code>GET /api/v1/organization/roles/{role_id}/</code> - 获取角色当前菜单</li>
+                <li><code>POST /api/v1/organization/assign/menus/</code> - 分配菜单给角色</li>
+                <li><code>GET /api/v1/organization/user/permissions/</code> - 刷新用户菜单</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">✅ 预期结果</h3>
+            <p>如果功能正常工作，应该看到：</p>
+            <ul>
+                <li>✅ 菜单创建成功的提示消息</li>
+                <li>✅ 左侧菜单栏立即出现新的"测试菜单"项</li>
+                <li>✅ 无需手动刷新页面或重新登录</li>
+                <li>✅ 删除菜单后，侧边栏菜单立即消失</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="http://localhost:3001/auth/login" class="btn btn-success" target="_blank">
+                🚀 开始测试
+            </a>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px; color: #718096; font-size: 14px;">
+            菜单创建自动分配功能测试页面 v1.0
+        </div>
+    </div>
+</body>
+</html>

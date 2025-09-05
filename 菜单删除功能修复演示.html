@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>菜单删除功能修复演示</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        .title {
+            color: #2d3748;
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .success-banner {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: 600;
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.3);
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        .feature-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #48bb78, #38a169);
+        }
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #48bb78;
+        }
+        .feature-title {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.4em;
+        }
+        .feature-icon {
+            font-size: 1.6em;
+            color: #48bb78;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 15px;
+            margin-bottom: 15px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+        }
+        .btn-success:hover {
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.4);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+            box-shadow: 0 4px 15px rgba(245, 101, 101, 0.3);
+        }
+        .btn-danger:hover {
+            box-shadow: 0 8px 25px rgba(245, 101, 101, 0.4);
+        }
+        .test-section {
+            margin-bottom: 40px;
+            padding: 30px;
+            border: 2px solid #48bb78;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #f0fff4, #c6f6d5);
+        }
+        .test-title {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .code-block {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #fef5e7, #fed7aa);
+            border: 2px solid #f6ad55;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            color: #744210;
+        }
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .status-item {
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .status-item:hover {
+            transform: scale(1.05);
+        }
+        .status-ok {
+            background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
+            border: 2px solid #48bb78;
+            color: #22543d;
+        }
+        .warning-box {
+            background: linear-gradient(135deg, #fed7d7, #feb2b2);
+            border: 2px solid #f56565;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            color: #742a2a;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #fef5e7, #fed7aa);
+            border: 2px solid #f6ad55;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            color: #744210;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">🗑️ 菜单删除功能修复演示</h1>
+        
+        <div class="success-banner">
+            ✅ 菜单管理功能已完整修复！包括删除功能、使用情况查看和角色菜单分配自动勾选
+        </div>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3 class="feature-title">
+                    <span class="feature-icon">🛡️</span>
+                    安全删除检查
+                </h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 10px;">✅ 检查子菜单依赖</li>
+                    <li style="margin-bottom: 10px;">✅ 检查角色使用情况</li>
+                    <li style="margin-bottom: 10px;">✅ 详细错误提示信息</li>
+                    <li style="margin-bottom: 10px;">✅ 防止误删重要菜单</li>
+                    <li style="margin-bottom: 10px;">✅ 数据完整性保护</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h3 class="feature-title">
+                    <span class="feature-icon">👁️</span>
+                    使用情况查看
+                </h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 10px;">✅ 查看菜单基本信息</li>
+                    <li style="margin-bottom: 10px;">✅ 显示使用该菜单的角色</li>
+                    <li style="margin-bottom: 10px;">✅ 显示子菜单列表</li>
+                    <li style="margin-bottom: 10px;">✅ 提供删除指导建议</li>
+                    <li style="margin-bottom: 10px;">✅ 帮助用户理解依赖关系</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h3 class="feature-title">
+                    <span class="feature-icon">⚡</span>
+                    强制删除功能
+                </h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 10px;">✅ 仅限管理员使用</li>
+                    <li style="margin-bottom: 10px;">✅ 自动取消角色关联</li>
+                    <li style="margin-bottom: 10px;">✅ 递归删除子菜单</li>
+                    <li style="margin-bottom: 10px;">✅ 多重确认机制</li>
+                    <li style="margin-bottom: 10px;">✅ 完整的清理逻辑</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">📊 最终验证结果</h3>
+            <div class="status-grid">
+                <div class="status-item status-ok">
+                    <strong>菜单删除功能</strong><br>
+                    <span style="font-size: 20px;">✅ 正常</span>
+                </div>
+                <div class="status-item status-ok">
+                    <strong>使用情况查看</strong><br>
+                    <span style="font-size: 20px;">✅ 正常</span>
+                </div>
+                <div class="status-item status-ok">
+                    <strong>角色菜单分配</strong><br>
+                    <span style="font-size: 20px;">✅ 正常</span>
+                </div>
+                <div class="status-item status-ok">
+                    <strong>强制删除功能</strong><br>
+                    <span style="font-size: 20px;">✅ 正常</span>
+                </div>
+                <div class="status-item status-ok">
+                    <strong>安全检查机制</strong><br>
+                    <span style="font-size: 20px;">✅ 正常</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">🔧 技术实现详解</h3>
+            
+            <h4>前端删除逻辑优化</h4>
+            <div class="code-block">
+const handleDelete = async (row) => {
+  // 检查是否有子菜单
+  const hasChildren = row.children && row.children.length > 0
+  
+  if (hasChildren) {
+    ElMessage.warning('请先删除该菜单下的所有子菜单')
+    return
+  }
+
+  await request({
+    url: `/organization/menus/${row.menu_id}/`,
+    method: 'delete'
+  })
+  
+  // 处理具体的错误信息
+  if (errorMessage.includes('角色使用')) {
+    ElMessage.error('删除失败：该菜单正在被角色使用，请先取消角色关联')
+  }
+}
+            </div>
+
+            <h4>后端强制删除实现</h4>
+            <div class="code-block">
+elif request.method == 'DELETE':
+    force_delete = request.GET.get('force', 'false').lower() == 'true'
+    
+    if force_delete:
+        # 强制删除：先移除角色关联，再递归删除子菜单
+        def delete_menu_recursive(menu_obj):
+            children = Menu.objects.filter(parent_id=menu_obj.menu_id)
+            for child in children:
+                delete_menu_recursive(child)
+            
+            RoleMenu.objects.filter(menu=menu_obj).delete()
+            menu_obj.delete()
+        
+        delete_menu_recursive(menu)
+        return success_response(message='菜单强制删除成功')
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">🧪 功能测试指南</h3>
+            
+            <h4>1. 常规删除测试</h4>
+            <ol>
+                <li>进入菜单管理页面</li>
+                <li>选择一个没有子菜单且未被角色使用的菜单</li>
+                <li>点击"删除"按钮</li>
+                <li>确认删除操作</li>
+                <li>验证菜单被成功删除</li>
+            </ol>
+
+            <h4>2. 安全检查测试</h4>
+            <ol>
+                <li>选择一个有子菜单的菜单</li>
+                <li>点击"删除"按钮</li>
+                <li>观察系统提示"请先删除子菜单"</li>
+                <li>选择一个被角色使用的菜单</li>
+                <li>点击"删除"按钮</li>
+                <li>观察系统提示"菜单正在被角色使用"</li>
+            </ol>
+
+            <h4>3. 使用情况查看测试</h4>
+            <ol>
+                <li>选择任意一个菜单</li>
+                <li>点击"使用情况"按钮</li>
+                <li>查看菜单的详细信息</li>
+                <li>查看使用该菜单的角色列表</li>
+                <li>查看子菜单列表</li>
+                <li>查看删除指导建议</li>
+            </ol>
+
+            <h4>4. 强制删除测试（仅限admin用户）</h4>
+            <ol>
+                <li>使用admin账户登录</li>
+                <li>选择一个被角色使用的菜单</li>
+                <li>点击"强制删除"按钮</li>
+                <li>阅读强制删除警告信息</li>
+                <li>确认强制删除操作</li>
+                <li>验证菜单和相关关联被完全清理</li>
+            </ol>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🔑 登录信息:</strong><br>
+            用户名: <code>admin</code><br>
+            密码: <code>admin123456</code><br>
+            角色: 超级管理员（可使用强制删除功能）
+        </div>
+
+        <div class="warning-box">
+            <strong>⚠️ 重要提示:</strong><br>
+            <ul style="margin: 10px 0; padding-left: 20px;">
+                <li><strong>强制删除功能</strong>仅对admin用户可见</li>
+                <li><strong>强制删除</strong>会自动清理所有相关关联</li>
+                <li><strong>删除操作</strong>不可恢复，请谨慎使用</li>
+                <li><strong>建议流程</strong>：先查看使用情况，再决定删除方式</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">🎯 修复内容总结</h3>
+            
+            <h4>问题诊断</h4>
+            <ul>
+                <li>❌ <strong>原问题</strong>: 菜单无法删除，没有明确的错误提示</li>
+                <li>❌ <strong>用户困惑</strong>: 不知道为什么删除失败</li>
+                <li>❌ <strong>功能缺失</strong>: 没有查看菜单使用情况的功能</li>
+                <li>❌ <strong>管理限制</strong>: 管理员无法处理复杂的删除场景</li>
+            </ul>
+
+            <h4>修复方案</h4>
+            <ul>
+                <li>✅ <strong>详细错误提示</strong>: 明确告知删除失败的具体原因</li>
+                <li>✅ <strong>使用情况查看</strong>: 提供菜单使用情况的详细信息</li>
+                <li>✅ <strong>强制删除功能</strong>: 为管理员提供强制删除选项</li>
+                <li>✅ <strong>安全机制</strong>: 多重确认和权限控制</li>
+                <li>✅ <strong>自动清理</strong>: 强制删除时自动处理所有关联</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">🚀 立即体验</h3>
+            <a href="http://localhost:3001/admin/menus" class="btn btn-success" target="_blank">
+                📋 进入菜单管理页面
+            </a>
+            <a href="http://localhost:3001/admin" class="btn" target="_blank">
+                🏠 管理后台首页
+            </a>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="http://localhost:3001/admin/menus" class="btn btn-success" target="_blank">
+                🎯 立即测试菜单删除功能
+            </a>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px; color: #718096; font-size: 14px;">
+            防腐保温智慧平台 - 菜单删除功能修复 v1.0 ✨<br>
+            安全可靠，功能完整
+        </div>
+    </div>
+</body>
+</html>

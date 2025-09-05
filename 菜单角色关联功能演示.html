@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>菜单与角色关联功能演示</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        .title {
+            color: #2d3748;
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .success-banner {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        .feature-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #48bb78, #38a169);
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        .feature-title {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2em;
+        }
+        .feature-icon {
+            font-size: 1.4em;
+            color: #48bb78;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            border: 2px solid #48bb78;
+            border-radius: 12px;
+            background: #f0fff4;
+        }
+        .test-title {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 15px;
+            margin-bottom: 15px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+        }
+        .btn-success:hover {
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.4);
+        }
+        .btn-warning {
+            background: linear-gradient(135deg, #ed8936, #dd6b20);
+            box-shadow: 0 4px 15px rgba(237, 137, 54, 0.3);
+        }
+        .btn-warning:hover {
+            box-shadow: 0 8px 25px rgba(237, 137, 54, 0.4);
+        }
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .status-item {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .status-item:hover {
+            transform: scale(1.05);
+        }
+        .status-ok {
+            background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
+            border: 2px solid #48bb78;
+            color: #22543d;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #fef5e7, #fed7aa);
+            border: 2px solid #f6ad55;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            color: #744210;
+        }
+        .steps-list {
+            counter-reset: step-counter;
+            list-style: none;
+            padding: 0;
+        }
+        .steps-list li {
+            counter-increment: step-counter;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .steps-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: -12px;
+            top: 12px;
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .menu-structure {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        .menu-item {
+            color: #68d391;
+        }
+        .menu-path {
+            color: #90cdf4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">🎯 菜单与角色关联功能演示</h1>
+        
+        <div class="success-banner">
+            ✅ 菜单与角色关联功能修复完成！动态菜单已正常工作
+        </div>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3 class="feature-title">
+                    <span class="feature-icon">🔗</span>
+                    角色菜单关联
+                </h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 8px;">✅ 角色可以分配多个菜单</li>
+                    <li style="margin-bottom: 8px;">✅ 菜单支持树形结构分配</li>
+                    <li style="margin-bottom: 8px;">✅ 支持半选中状态处理</li>
+                    <li style="margin-bottom: 8px;">✅ 实时生效，无需重启</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h3 class="feature-title">
+                    <span class="feature-icon">🔄</span>
+                    动态菜单更新
+                </h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 8px;">✅ 菜单管理操作后自动刷新</li>
+                    <li style="margin-bottom: 8px;">✅ 角色分配后立即生效</li>
+                    <li style="margin-bottom: 8px;">✅ 全局菜单状态管理</li>
+                    <li style="margin-bottom: 8px;">✅ 无需手动刷新页面</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h3 class="feature-title">
+                    <span class="feature-icon">🌲</span>
+                    侧边栏菜单
+                </h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 8px;">✅ 根据用户角色动态生成</li>
+                    <li style="margin-bottom: 8px;">✅ 支持多级菜单嵌套</li>
+                    <li style="margin-bottom: 8px;">✅ 菜单图标和路径配置</li>
+                    <li style="margin-bottom: 8px;">✅ 响应式设计适配</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">🚀 功能演示入口</h3>
+            <a href="http://localhost:3001/admin" class="btn btn-success" target="_blank">
+                🏠 管理后台首页
+            </a>
+            <a href="http://localhost:3001/admin/roles" class="btn" target="_blank">
+                🎭 角色管理（分配菜单）
+            </a>
+            <a href="http://localhost:3001/admin/menus" class="btn" target="_blank">
+                🌲 菜单管理（增删改查）
+            </a>
+            <a href="http://localhost:3001/admin/users" class="btn btn-warning" target="_blank">
+                👥 用户管理（分配角色）
+            </a>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">📊 测试结果</h3>
+            <div class="status-grid">
+                <div class="status-item status-ok">
+                    <strong>用户权限API</strong><br>
+                    <small>14个权限 ✅</small>
+                </div>
+                <div class="status-item status-ok">
+                    <strong>用户菜单API</strong><br>
+                    <small>4个顶级菜单 ✅</small>
+                </div>
+                <div class="status-item status-ok">
+                    <strong>角色菜单分配</strong><br>
+                    <small>17个菜单分配 ✅</small>
+                </div>
+                <div class="status-item status-ok">
+                    <strong>动态菜单生成</strong><br>
+                    <small>实时更新 ✅</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">🌲 当前菜单结构</h3>
+            <div class="menu-structure">
+<span class="menu-item">系统管理</span> <span class="menu-path">(/admin)</span>
+├── <span class="menu-item">角色管理</span> <span class="menu-path">(/admin/roles)</span>
+├── <span class="menu-item">权限管理</span> <span class="menu-path">(/admin/permissions)</span>
+├── <span class="menu-item">菜单管理</span> <span class="menu-path">(/admin/menus)</span>
+├── <span class="menu-item">系统设置</span> <span class="menu-path">(/admin/settings)</span>
+├── <span class="menu-item">系统配置</span> <span class="menu-path">(/admin/configs)</span>
+└── <span class="menu-item">操作日志</span> <span class="menu-path">(/admin/logs)</span>
+
+<span class="menu-item">用户管理</span> <span class="menu-path">(/users)</span>
+├── <span class="menu-item">用户列表</span> <span class="menu-path">(/users/list)</span>
+└── <span class="menu-item">企业认证</span> <span class="menu-path">(/users/enterprise)</span>
+
+<span class="menu-item">内容管理</span> <span class="menu-path">(/content)</span>
+├── <span class="menu-item">信息发布</span> <span class="menu-path">(/content/publish)</span>
+└── <span class="menu-item">内容审核</span> <span class="menu-path">(/content/audit)</span>
+
+<span class="menu-item">数据统计</span> <span class="menu-path">(/statistics)</span>
+├── <span class="menu-item">用户统计</span> <span class="menu-path">(/statistics/users)</span>
+└── <span class="menu-item">业务统计</span> <span class="menu-path">(/statistics/business)</span>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🔑 登录信息:</strong><br>
+            用户名: <code>admin</code><br>
+            密码: <code>admin123456</code><br>
+            角色: 超级管理员（拥有所有权限和菜单）
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">📋 测试步骤</h3>
+            <ol class="steps-list">
+                <li><strong>登录系统:</strong> 使用admin账号登录管理后台</li>
+                <li><strong>查看侧边栏:</strong> 观察左侧菜单是否正确显示所有菜单项</li>
+                <li><strong>菜单管理测试:</strong>
+                    <ul style="margin-top: 10px;">
+                        <li>进入菜单管理页面</li>
+                        <li>创建一个新的测试菜单</li>
+                        <li>观察侧边栏是否自动更新</li>
+                        <li>删除测试菜单，观察侧边栏变化</li>
+                    </ul>
+                </li>
+                <li><strong>角色菜单分配测试:</strong>
+                    <ul style="margin-top: 10px;">
+                        <li>进入角色管理页面</li>
+                        <li>选择一个角色进行菜单分配</li>
+                        <li>取消选中某些菜单项</li>
+                        <li>保存后观察侧边栏菜单变化</li>
+                    </ul>
+                </li>
+                <li><strong>用户角色分配测试:</strong>
+                    <ul style="margin-top: 10px;">
+                        <li>创建一个新用户</li>
+                        <li>为用户分配不同的角色</li>
+                        <li>使用新用户登录查看菜单差异</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">🔧 修复的问题</h3>
+            <div class="status-grid">
+                <div class="status-item status-ok">
+                    <strong>菜单角色关联</strong><br>
+                    <small>✅ 已修复</small>
+                </div>
+                <div class="status-item status-ok">
+                    <strong>动态菜单更新</strong><br>
+                    <small>✅ 已修复</small>
+                </div>
+                <div class="status-item status-ok">
+                    <strong>侧边栏刷新</strong><br>
+                    <small>✅ 已修复</small>
+                </div>
+                <div class="status-item status-ok">
+                    <strong>全局状态管理</strong><br>
+                    <small>✅ 已实现</small>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="http://localhost:3001/admin" class="btn btn-success" target="_blank">
+                🎯 立即体验修复后的功能
+            </a>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px; color: #718096; font-size: 14px;">
+            防腐保温智慧平台 - 菜单与角色关联功能 v1.0 ✨<br>
+            问题已修复，功能正常运行
+        </div>
+    </div>
+</body>
+</html>

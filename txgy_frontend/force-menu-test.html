@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>强制菜单显示测试</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+        .action-section {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 15px;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+        }
+        .btn.success {
+            background: #28a745;
+        }
+        .btn.success:hover {
+            background: #218838;
+        }
+        .btn.danger {
+            background: #dc3545;
+        }
+        .btn.danger:hover {
+            background: #c82333;
+        }
+        .status {
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+        .quick-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        .link-btn {
+            background: #6c757d;
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+        .link-btn:hover {
+            background: #5a6268;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🔧 强制菜单显示测试</h1>
+            <p class="subtitle">直接设置登录状态并强制显示菜单</p>
+        </div>
+
+        <!-- 步骤1：设置登录状态 -->
+        <div class="action-section">
+            <div class="section-title">步骤1：设置登录状态</div>
+            <div id="login-status" class="status info">点击按钮设置登录状态...</div>
+            <button class="btn success" onclick="forceLogin()">强制设置登录状态</button>
+            <button class="btn danger" onclick="clearLogin()">清除登录状态</button>
+            <div id="login-info" class="code-block"></div>
+        </div>
+
+        <!-- 步骤2：检查浏览器控制台 -->
+        <div class="action-section">
+            <div class="section-title">步骤2：检查浏览器控制台</div>
+            <div class="status info">
+                请按F12打开浏览器开发者工具，查看Console标签页中的调试信息。
+                我们添加了详细的日志来追踪菜单加载过程。
+            </div>
+            <div class="code-block">
+预期看到的日志：
+🔄 开始加载用户菜单和权限...
+📊 默认菜单数量: 5
+🎯 menuList计算属性被调用
+📊 allMenus.value长度: 5
+✅ 处理后的菜单: 仪表盘, 子菜单数量: 0
+✅ 处理后的菜单: 用户管理, 子菜单数量: 0
+...
+🎯 最终菜单数量: 5
+            </div>
+        </div>
+
+        <!-- 步骤3：访问管理后台 -->
+        <div class="action-section">
+            <div class="section-title">步骤3：访问管理后台</div>
+            <div id="access-status" class="status info">设置登录状态后，点击下面的链接访问管理后台</div>
+            <div class="quick-links">
+                <a href="/admin" class="link-btn" target="_blank">管理后台首页</a>
+                <a href="/admin/users" class="link-btn" target="_blank">用户管理</a>
+                <a href="/admin/menus" class="link-btn" target="_blank">菜单管理</a>
+            </div>
+        </div>
+
+        <!-- 步骤4：手动调试 -->
+        <div class="action-section">
+            <div class="section-title">步骤4：手动调试（高级）</div>
+            <div class="status info">
+                如果上述步骤仍然无效，请在浏览器控制台中运行以下代码进行手动调试：
+            </div>
+            <div class="code-block">
+// 检查Vue应用实例
+console.log('Vue应用:', window.__VUE_DEVTOOLS_GLOBAL_HOOK__?.apps?.[0]);
+
+// 检查Pinia store
+const app = window.__VUE_DEVTOOLS_GLOBAL_HOOK__?.apps?.[0];
+if (app) {
+  const pinia = app._instance?.appContext?.app?.config?.globalProperties?.$pinia;
+  console.log('Pinia实例:', pinia);
+  
+  if (pinia) {
+    const menuStore = pinia._s.get('menu');
+    console.log('菜单Store:', menuStore);
+    console.log('allMenus:', menuStore?.allMenus);
+    console.log('menuList:', menuStore?.menuList);
+    
+    // 强制重新加载菜单
+    if (menuStore) {
+      menuStore.loadUserMenus().then(() => {
+        console.log('菜单重新加载完成');
+        console.log('新的menuList:', menuStore.menuList);
+      });
+    }
+  }
+}
+            </div>
+            <button class="btn" onclick="copyDebugCode()">复制调试代码</button>
+        </div>
+
+        <!-- 步骤5：检查网络请求 -->
+        <div class="action-section">
+            <div class="section-title">步骤5：检查网络请求</div>
+            <div class="status info">
+                在开发者工具的Network标签页中，查看是否有失败的API请求。
+                特别关注 /api/auth/permissions 这个请求。
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateStatus(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.className = `status ${type}`;
+                element.textContent = message;
+            }
+        }
+
+        function forceLogin() {
+            // 设置完整的登录状态 - 使用正确的key
+            const mockToken = 'Bearer_mock_admin_token_' + Date.now();
+            const mockUser = {
+                user_id: 1,
+                username: 'admin',
+                user_type: 'admin',
+                email: 'admin@example.com',
+                roles: ['admin'],
+                permissions: ['dashboard:view', 'users:manage', 'roles:manage', 'menus:manage', 'enterprise:manage']
+            };
+
+            // 设置到localStorage - 使用正确的key
+            localStorage.setItem('txgy_token', mockToken);  // 正确的token key
+            localStorage.setItem('user_info', JSON.stringify(mockUser));
+
+            // 也设置旧的key以兼容
+            localStorage.setItem('auth_token', mockToken);
+
+            // 也设置到sessionStorage（以防万一）
+            sessionStorage.setItem('txgy_token', mockToken);
+            sessionStorage.setItem('user_info', JSON.stringify(mockUser));
+            
+            updateStatus('login-status', '✅ 登录状态已强制设置', 'success');
+            
+            // 显示设置的信息
+            const loginInfo = document.getElementById('login-info');
+            loginInfo.textContent = `令牌: ${mockToken}\n用户信息: ${JSON.stringify(mockUser, null, 2)}`;
+            
+            updateStatus('access-status', '✅ 现在可以访问管理后台了，请点击上面的链接', 'success');
+            
+            console.log('🔧 强制登录设置完成');
+            console.log('🔧 令牌:', mockToken);
+            console.log('🔧 用户信息:', mockUser);
+        }
+
+        function clearLogin() {
+            // 清除所有可能的token key
+            localStorage.removeItem('txgy_token');  // 正确的token key
+            localStorage.removeItem('auth_token');  // 兼容的token key
+            localStorage.removeItem('user_info');
+            sessionStorage.removeItem('txgy_token');
+            sessionStorage.removeItem('auth_token');
+            sessionStorage.removeItem('user_info');
+            
+            updateStatus('login-status', '❌ 登录状态已清除', 'error');
+            document.getElementById('login-info').textContent = '';
+            updateStatus('access-status', '⚠️ 需要重新设置登录状态', 'info');
+            
+            console.log('🔧 登录状态已清除');
+        }
+
+        function copyDebugCode() {
+            const code = `// 检查Vue应用实例
+console.log('Vue应用:', window.__VUE_DEVTOOLS_GLOBAL_HOOK__?.apps?.[0]);
+
+// 检查Pinia store
+const app = window.__VUE_DEVTOOLS_GLOBAL_HOOK__?.apps?.[0];
+if (app) {
+  const pinia = app._instance?.appContext?.app?.config?.globalProperties?.$pinia;
+  console.log('Pinia实例:', pinia);
+  
+  if (pinia) {
+    const menuStore = pinia._s.get('menu');
+    console.log('菜单Store:', menuStore);
+    console.log('allMenus:', menuStore?.allMenus);
+    console.log('menuList:', menuStore?.menuList);
+    
+    // 强制重新加载菜单
+    if (menuStore) {
+      menuStore.loadUserMenus().then(() => {
+        console.log('菜单重新加载完成');
+        console.log('新的menuList:', menuStore.menuList);
+      });
+    }
+  }
+}`;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                alert('调试代码已复制到剪贴板！请在浏览器控制台中粘贴并运行。');
+            }).catch(() => {
+                alert('复制失败，请手动复制上面的代码。');
+            });
+        }
+
+        // 页面加载时检查当前登录状态
+        window.onload = function() {
+            const token = localStorage.getItem('txgy_token') || localStorage.getItem('auth_token');
+            const userInfo = localStorage.getItem('user_info');
+            
+            if (token && userInfo) {
+                updateStatus('login-status', '✅ 检测到现有登录状态', 'success');
+                updateStatus('access-status', '✅ 可以访问管理后台', 'success');
+                
+                const loginInfo = document.getElementById('login-info');
+                loginInfo.textContent = `令牌: ${token}\n用户信息: ${userInfo}`;
+            } else {
+                updateStatus('login-status', '❌ 未检测到登录状态', 'error');
+                updateStatus('access-status', '⚠️ 需要设置登录状态', 'info');
+            }
+        };
+    </script>
+</body>
+</html>

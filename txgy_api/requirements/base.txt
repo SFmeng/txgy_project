@@ -1,0 +1,68 @@
+# Django核心
+Django==5.2.5
+djangorestframework==3.15.2
+
+# 数据库
+PyMySQL==1.1.0
+mysqlclient==2.2.0
+
+# 缓存和消息队列
+redis==5.0.1
+celery==5.3.4
+django-celery-beat==2.5.0
+
+# 搜索引擎
+elasticsearch==8.10.0
+elasticsearch-dsl==8.9.0
+
+# API文档
+drf-yasg==1.21.7
+
+# 认证和权限
+djangorestframework-simplejwt==5.3.0
+django-cors-headers==4.3.1
+
+# 过滤和分页
+django-filter==23.3
+
+# 图像处理
+Pillow==10.0.1
+
+# 配置管理
+python-decouple==3.8
+
+# 加密
+cryptography==41.0.7
+
+# HTTP请求
+requests==2.31.0
+
+# 时间处理
+python-dateutil==2.8.2
+
+# 数据验证
+marshmallow==3.20.1
+
+# 文件处理
+openpyxl==3.1.2
+python-docx==0.8.11
+
+# 短信服务
+aliyun-python-sdk-core==2.14.0
+aliyun-python-sdk-dysmsapi==3.0.0
+
+# 邮件服务
+django-ses==3.5.0
+
+# 监控和日志
+sentry-sdk==1.38.0
+django-extensions==3.2.3
+
+# 开发工具
+ipython==8.17.0
+django-debug-toolbar==4.2.0
+
+# 代码质量
+black==23.9.1
+isort==5.12.0
+flake8==6.1.0

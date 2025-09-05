@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>菜单数据验证</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .menu-item {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        .menu-name {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+        .menu-path {
+            color: #6c757d;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .menu-status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .child-menu {
+            margin-left: 20px;
+            margin-top: 10px;
+            border-left: 2px solid #007bff;
+            padding-left: 15px;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .info-box {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>菜单数据验证</h1>
+        
+        <div class="info-box">
+            <strong>说明：</strong>这个页面用于验证默认菜单数据的配置是否正确。
+            如果菜单显示正常，说明数据配置没有问题；如果左侧导航栏不显示，可能是其他原因。
+        </div>
+
+        <button class="btn" onclick="showDefaultMenus()">显示默认菜单数据</button>
+        <button class="btn" onclick="testMenuPaths()">测试菜单路径</button>
+        <button class="btn" onclick="clearDisplay()">清空显示</button>
+
+        <div id="menu-display"></div>
+    </div>
+
+    <script>
+        // 默认菜单数据（从stores/menu.js复制）
+        const defaultMenus = [
+            {
+                menu_id: 1,
+                menu_name: '仪表盘',
+                path: '/admin',
+                icon: 'DataBoard',
+                parent_id: null,
+                sort_order: 1,
+                status: 'active',
+                terminal: 'pc',
+                component: 'Dashboard',
+                children: []
+            },
+            {
+                menu_id: 2,
+                menu_name: '用户管理',
+                path: '/admin/users',
+                icon: 'User',
+                parent_id: null,
+                sort_order: 2,
+                status: 'active',
+                terminal: 'pc',
+                component: 'Users',
+                children: []
+            },
+            {
+                menu_id: 3,
+                menu_name: '角色管理',
+                path: '/admin/roles',
+                icon: 'UserFilled',
+                parent_id: null,
+                sort_order: 3,
+                status: 'active',
+                terminal: 'pc',
+                component: 'Roles',
+                children: []
+            },
+            {
+                menu_id: 4,
+                menu_name: '菜单管理',
+                path: '/admin/menus',
+                icon: 'Menu',
+                parent_id: null,
+                sort_order: 4,
+                status: 'active',
+                terminal: 'pc',
+                component: 'Menus',
+                children: []
+            },
+            {
+                menu_id: 5,
+                menu_name: '企业管理',
+                path: '',
+                icon: 'OfficeBuilding',
+                parent_id: null,
+                sort_order: 5,
+                status: 'active',
+                terminal: 'pc',
+                component: '',
+                children: [
+                    {
+                        menu_id: 51,
+                        menu_name: '企业认证',
+                        path: '/admin/enterprise-verify',
+                        icon: 'DocumentChecked',
+                        parent_id: 5,
+                        sort_order: 1,
+                        status: 'active',
+                        terminal: 'pc',
+                        component: 'EnterpriseVerify',
+                        children: []
+                    },
+                    {
+                        menu_id: 52,
+                        menu_name: '企业管理',
+                        path: '/admin/enterprise-manage',
+                        icon: 'Shop',
+                        parent_id: 5,
+                        sort_order: 2,
+                        status: 'active',
+                        terminal: 'pc',
+                        component: 'EnterpriseManage',
+                        children: []
+                    }
+                ]
+            }
+        ];
+
+        function showDefaultMenus() {
+            const display = document.getElementById('menu-display');
+            display.innerHTML = '<h2>默认菜单数据</h2>';
+            
+            defaultMenus.forEach(menu => {
+                const menuDiv = createMenuElement(menu);
+                display.appendChild(menuDiv);
+            });
+        }
+
+        function createMenuElement(menu) {
+            const div = document.createElement('div');
+            div.className = 'menu-item';
+            
+            const statusClass = menu.status === 'active' ? 'status-active' : 'status-inactive';
+            
+            div.innerHTML = `
+                <div class="menu-name">
+                    ${menu.menu_name}
+                    <span class="menu-status ${statusClass}">${menu.status}</span>
+                </div>
+                <div class="menu-path">路径: ${menu.path || '(空路径)'}</div>
+                <div class="menu-path">图标: ${menu.icon}</div>
+                <div class="menu-path">组件: ${menu.component || '(无组件)'}</div>
+            `;
+            
+            if (menu.children && menu.children.length > 0) {
+                menu.children.forEach(child => {
+                    const childDiv = document.createElement('div');
+                    childDiv.className = 'child-menu';
+                    const childStatusClass = child.status === 'active' ? 'status-active' : 'status-inactive';
+                    childDiv.innerHTML = `
+                        <div class="menu-name">
+                            ${child.menu_name}
+                            <span class="menu-status ${childStatusClass}">${child.status}</span>
+                        </div>
+                        <div class="menu-path">路径: ${child.path}</div>
+                        <div class="menu-path">图标: ${child.icon}</div>
+                        <div class="menu-path">组件: ${child.component}</div>
+                    `;
+                    div.appendChild(childDiv);
+                });
+            }
+            
+            return div;
+        }
+
+        function testMenuPaths() {
+            const display = document.getElementById('menu-display');
+            display.innerHTML = '<h2>菜单路径测试</h2>';
+            
+            const paths = [
+                '/admin',
+                '/admin/users',
+                '/admin/roles',
+                '/admin/menus',
+                '/admin/enterprise-verify',
+                '/admin/enterprise-manage'
+            ];
+            
+            paths.forEach(path => {
+                const div = document.createElement('div');
+                div.className = 'menu-item';
+                div.innerHTML = `
+                    <div class="menu-name">测试路径: ${path}</div>
+                    <div class="menu-path">
+                        <a href="${path}" target="_blank" style="color: #007bff; text-decoration: none;">
+                            点击测试 →
+                        </a>
+                    </div>
+                `;
+                display.appendChild(div);
+            });
+        }
+
+        function clearDisplay() {
+            document.getElementById('menu-display').innerHTML = '';
+        }
+
+        // 页面加载时自动显示菜单
+        window.onload = function() {
+            showDefaultMenus();
+        };
+    </script>
+</body>
+</html>

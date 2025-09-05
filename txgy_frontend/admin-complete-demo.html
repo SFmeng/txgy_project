@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理后台完整功能展示</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .title {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: #6b7280;
+            margin-bottom: 40px;
+        }
+
+        .status-banner {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+        }
+
+        .status-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .status-desc {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .pages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .page-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6 0%, #6366f1 100%);
+        }
+
+        .page-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .page-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .page-info h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0 0 4px 0;
+        }
+
+        .page-status {
+            font-size: 12px;
+            color: #10b981;
+            font-weight: 500;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .page-desc {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .page-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .page-features li {
+            padding: 4px 0;
+            color: #374151;
+            font-size: 14px;
+            position: relative;
+            padding-left: 16px;
+        }
+
+        .page-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .page-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .page-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .login-section {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .login-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 16px;
+        }
+
+        .login-desc {
+            color: #6b7280;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .login-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            color: white;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin: 0 8px;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .login-info {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 1px solid #f59e0b;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+
+        .login-info-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 8px;
+        }
+
+        .login-info-desc {
+            color: #b45309;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 36px;
+            }
+            
+            .container {
+                padding: 20px 16px;
+            }
+            
+            .pages-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">管理后台完整功能</h1>
+            <p class="subtitle">防腐保温智慧平台 - 企业级管理系统</p>
+        </div>
+
+        <div class="status-banner">
+            <div class="status-title">✅ 所有功能已完成并美化 + 动态菜单权限管理</div>
+            <div class="status-desc">仪表盘、个人中心、角色管理、用户管理、菜单管理、企业认证、企业管理等核心功能全部完善，支持动态菜单权限分配</div>
+        </div>
+
+        <div class="pages-grid">
+            <div class="page-card">
+                <div class="page-header">
+                    <div class="page-icon">📊</div>
+                    <div class="page-info">
+                        <h3>管理仪表盘</h3>
+                        <span class="page-status">已完成</span>
+                    </div>
+                </div>
+                <p class="page-desc">
+                    实时数据监控和系统概览，包含统计卡片、图表展示、快捷操作等功能模块。
+                </p>
+                <ul class="page-features">
+                    <li>个性化欢迎区域</li>
+                    <li>实时统计数据展示</li>
+                    <li>数据可视化图表</li>
+                    <li>快捷操作面板</li>
+                    <li>系统状态监控</li>
+                </ul>
+                <a href="http://169.254.119.98:3002/dashboard-demo.html" class="page-button" target="_blank">
+                    查看详情
+                </a>
+            </div>
+
+            <div class="page-card">
+                <div class="page-header">
+                    <div class="page-icon">👤</div>
+                    <div class="page-info">
+                        <h3>个人中心</h3>
+                        <span class="page-status">已完成</span>
+                    </div>
+                </div>
+                <p class="page-desc">
+                    个人信息管理、密码修改、角色权限查看等功能，支持完整的用户账户管理。
+                </p>
+                <ul class="page-features">
+                    <li>基本信息编辑</li>
+                    <li>密码安全管理</li>
+                    <li>角色权限查看</li>
+                    <li>账户统计信息</li>
+                    <li>操作历史记录</li>
+                </ul>
+                <a href="http://169.254.119.98:3002/profile-demo.html" class="page-button" target="_blank">
+                    查看详情
+                </a>
+            </div>
+
+            <div class="page-card">
+                <div class="page-header">
+                    <div class="page-icon">👥</div>
+                    <div class="page-info">
+                        <h3>角色管理</h3>
+                        <span class="page-status">已美化</span>
+                    </div>
+                </div>
+                <p class="page-desc">
+                    系统角色权限管理，支持角色创建、权限分配、菜单权限等功能。
+                </p>
+                <ul class="page-features">
+                    <li>角色CRUD操作</li>
+                    <li>权限树形分配</li>
+                    <li>菜单权限管理</li>
+                    <li>批量权限操作</li>
+                    <li>权限继承关系</li>
+                </ul>
+                <a href="http://169.254.119.98:3002/admin/roles" class="page-button" target="_blank">
+                    访问页面
+                </a>
+            </div>
+
+            <div class="page-card">
+                <div class="page-header">
+                    <div class="page-icon">👨‍👩‍👧‍👦</div>
+                    <div class="page-info">
+                        <h3>用户管理</h3>
+                        <span class="page-status">已美化</span>
+                    </div>
+                </div>
+                <p class="page-desc">
+                    系统用户管理，支持用户创建、角色分配、状态管理等功能。
+                </p>
+                <ul class="page-features">
+                    <li>用户CRUD操作</li>
+                    <li>批量角色分配</li>
+                    <li>用户状态管理</li>
+                    <li>企业认证管理</li>
+                    <li>用户数据统计</li>
+                </ul>
+                <a href="http://169.254.119.98:3002/admin/users" class="page-button" target="_blank">
+                    访问页面
+                </a>
+            </div>
+
+            <div class="page-card">
+                <div class="page-header">
+                    <div class="page-icon">📋</div>
+                    <div class="page-info">
+                        <h3>菜单管理</h3>
+                        <span class="page-status">已完成</span>
+                    </div>
+                </div>
+                <p class="page-desc">
+                    动态菜单权限管理，支持左侧导航栏实时更新、权限分配、树形结构等功能。
+                </p>
+                <ul class="page-features">
+                    <li>动态菜单权限管理</li>
+                    <li>左侧导航栏实时同步</li>
+                    <li>树形菜单结构</li>
+                    <li>权限配置和分配</li>
+                    <li>路由和组件管理</li>
+                </ul>
+                <a href="http://169.254.119.98:3002/dynamic-menu-demo.html" class="page-button" target="_blank">
+                    查看详情
+                </a>
+            </div>
+
+            <div class="page-card">
+                <div class="page-header">
+                    <div class="page-icon">🏢</div>
+                    <div class="page-info">
+                        <h3>企业认证</h3>
+                        <span class="page-status">已完成</span>
+                    </div>
+                </div>
+                <p class="page-desc">
+                    企业认证审核管理，支持批量操作、材料预览、状态统计等功能。
+                </p>
+                <ul class="page-features">
+                    <li>实时统计数据</li>
+                    <li>智能搜索筛选</li>
+                    <li>批量审核操作</li>
+                    <li>材料在线预览</li>
+                    <li>审核流程管理</li>
+                </ul>
+                <a href="http://169.254.119.98:3002/enterprise-verify-demo.html" class="page-button" target="_blank">
+                    查看详情
+                </a>
+            </div>
+
+            <div class="page-card">
+                <div class="page-header">
+                    <div class="page-icon">🏭</div>
+                    <div class="page-info">
+                        <h3>企业管理</h3>
+                        <span class="page-status">已完成</span>
+                    </div>
+                </div>
+                <p class="page-desc">
+                    全面的企业信息管理，支持企业CRUD操作、状态控制、批量管理等功能。
+                </p>
+                <ul class="page-features">
+                    <li>企业信息管理</li>
+                    <li>多维度搜索筛选</li>
+                    <li>状态批量控制</li>
+                    <li>企业类型分类</li>
+                    <li>详细信息展示</li>
+                </ul>
+                <a href="http://169.254.119.98:3002/enterprise-manage-demo.html" class="page-button" target="_blank">
+                    查看详情
+                </a>
+            </div>
+
+            <div class="page-card">
+                <div class="page-header">
+                    <div class="page-icon">🎨</div>
+                    <div class="page-info">
+                        <h3>设计系统</h3>
+                        <span class="page-status">已完成</span>
+                    </div>
+                </div>
+                <p class="page-desc">
+                    统一的蓝色科技主题设计，现代化的企业级UI组件和交互效果。
+                </p>
+                <ul class="page-features">
+                    <li>蓝色科技主题</li>
+                    <li>渐变背景效果</li>
+                    <li>现代化卡片设计</li>
+                    <li>响应式布局</li>
+                    <li>统一交互规范</li>
+                </ul>
+                <a href="http://169.254.119.98:3002/admin-demo.html" class="page-button" target="_blank">
+                    设计展示
+                </a>
+            </div>
+        </div>
+
+        <div class="login-section">
+            <h2 class="login-title">开始使用管理后台</h2>
+            <p class="login-desc">
+                所有功能已经完成开发和美化，现在您可以登录管理后台体验完整的功能。
+                <br>系统采用现代化的企业级设计，提供优秀的用户体验。
+            </p>
+            
+            <div>
+                <a href="http://169.254.119.98:3002/auth/login" class="login-button">
+                    🚀 登录管理后台
+                </a>
+            </div>
+
+            <div class="login-info">
+                <div class="login-info-title">测试账号信息</div>
+                <div class="login-info-desc">
+                    用户名：admin<br>
+                    密码：admin123<br>
+                    登录后可访问所有管理功能
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>完整菜单功能测试</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 18px;
+        }
+        .test-section {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .step-number {
+            background: #007bff;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+        }
+        .btn.success {
+            background: #28a745;
+        }
+        .btn.success:hover {
+            background: #218838;
+        }
+        .btn.danger {
+            background: #dc3545;
+        }
+        .btn.danger:hover {
+            background: #c82333;
+        }
+        .btn.warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        .btn.warning:hover {
+            background: #e0a800;
+        }
+        .status {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 16px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .status.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .info-box {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .link-btn {
+            background: #6c757d;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+            display: block;
+        }
+        .link-btn:hover {
+            background: #5a6268;
+            transform: translateY(-1px);
+        }
+        .link-btn.primary {
+            background: #007bff;
+        }
+        .link-btn.primary:hover {
+            background: #0056b3;
+        }
+        .result-display {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .feature-item {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+        }
+        .feature-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .feature-desc {
+            font-size: 13px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🎯 完整菜单功能测试</h1>
+            <p class="subtitle">一站式测试左侧菜单栏显示和菜单管理功能</p>
+        </div>
+
+        <!-- 步骤1：设置登录状态 -->
+        <div class="test-section">
+            <div class="section-title">
+                <div class="step-number">1</div>
+                设置登录状态
+            </div>
+            <div class="info-box">
+                <strong>说明：</strong>首先需要设置正确的登录状态，这是显示左侧菜单栏的前提条件。
+            </div>
+            <div id="login-status" class="status info">点击按钮设置登录状态...</div>
+            <button class="btn success" onclick="forceLogin()">🔑 强制设置登录状态</button>
+            <button class="btn danger" onclick="clearLogin()">🗑️ 清除登录状态</button>
+            <button class="btn" onclick="checkLoginStatus()">🔍 检查当前状态</button>
+            <div id="login-info" class="result-display" style="display: none;"></div>
+        </div>
+
+        <!-- 步骤2：验证菜单显示 -->
+        <div class="test-section">
+            <div class="section-title">
+                <div class="step-number">2</div>
+                验证菜单显示
+            </div>
+            <div class="info-box">
+                <strong>说明：</strong>设置登录状态后，访问管理后台检查左侧菜单栏是否正常显示。
+            </div>
+            <div id="menu-status" class="status info">设置登录状态后，点击下面的链接测试菜单显示</div>
+            <div class="quick-links">
+                <a href="/admin" class="link-btn primary" target="_blank">🏠 管理后台首页</a>
+                <a href="/admin/users" class="link-btn" target="_blank">👥 用户管理</a>
+                <a href="/admin/roles" class="link-btn" target="_blank">🔐 角色管理</a>
+                <a href="/admin/menus" class="link-btn" target="_blank">📋 菜单管理</a>
+                <a href="/admin/enterprise-verify" class="link-btn" target="_blank">📋 企业认证</a>
+                <a href="/admin/enterprise-manage" class="link-btn" target="_blank">🏪 企业管理</a>
+            </div>
+        </div>
+
+        <!-- 步骤3：测试菜单管理功能 -->
+        <div class="test-section">
+            <div class="section-title">
+                <div class="step-number">3</div>
+                测试菜单管理功能
+            </div>
+            <div class="info-box">
+                <strong>说明：</strong>通过菜单管理页面，可以对左侧功能栏进行增删改操作。
+            </div>
+            <div id="management-status" class="status info">访问菜单管理页面测试功能</div>
+            
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">🔄</div>
+                    <div class="feature-title">状态切换</div>
+                    <div class="feature-desc">启用/禁用菜单项，实时反映到左侧导航栏</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">➕</div>
+                    <div class="feature-title">新增菜单</div>
+                    <div class="feature-desc">添加新的菜单项和子菜单</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">✏️</div>
+                    <div class="feature-title">编辑菜单</div>
+                    <div class="feature-desc">修改菜单名称、图标、路径等信息</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🗑️</div>
+                    <div class="feature-title">删除菜单</div>
+                    <div class="feature-desc">删除不需要的菜单项</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔀</div>
+                    <div class="feature-title">排序调整</div>
+                    <div class="feature-desc">调整菜单显示顺序</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📦</div>
+                    <div class="feature-title">批量操作</div>
+                    <div class="feature-desc">批量启用、禁用或删除菜单</div>
+                </div>
+            </div>
+            
+            <button class="btn primary" onclick="openMenuManagement()">🚀 打开菜单管理页面</button>
+        </div>
+
+        <!-- 步骤4：验证实时效果 -->
+        <div class="test-section">
+            <div class="section-title">
+                <div class="step-number">4</div>
+                验证实时效果
+            </div>
+            <div class="info-box">
+                <strong>说明：</strong>在菜单管理页面进行操作后，检查左侧菜单栏的变化。
+            </div>
+            <div id="realtime-status" class="status info">进行菜单操作后，检查实时效果</div>
+            
+            <div class="status warning">
+                <strong>测试步骤：</strong><br>
+                1. 在菜单管理页面禁用某个菜单项<br>
+                2. 返回管理后台首页，检查该菜单项是否消失<br>
+                3. 重新启用该菜单项<br>
+                4. 刷新页面，检查菜单项是否重新出现
+            </div>
+        </div>
+
+        <!-- 步骤5：问题排查 -->
+        <div class="test-section">
+            <div class="section-title">
+                <div class="step-number">5</div>
+                问题排查
+            </div>
+            <div class="info-box">
+                <strong>说明：</strong>如果遇到问题，使用以下工具进行排查。
+            </div>
+            <div id="debug-status" class="status info">使用调试工具排查问题</div>
+            
+            <button class="btn warning" onclick="openConsoleDebug()">🔧 打开控制台调试</button>
+            <button class="btn" onclick="checkBrowserStorage()">💾 检查浏览器存储</button>
+            <button class="btn" onclick="testNetworkRequests()">🌐 检查网络请求</button>
+            
+            <div id="debug-info" class="result-display" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        function updateStatus(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.className = `status ${type}`;
+                element.innerHTML = message;
+            }
+        }
+
+        function forceLogin() {
+            const mockToken = 'Bearer_mock_admin_token_' + Date.now();
+            const mockUser = {
+                user_id: 1,
+                username: 'admin',
+                user_type: 'admin',
+                email: 'admin@example.com',
+                roles: ['admin'],
+                permissions: ['dashboard:view', 'users:manage', 'roles:manage', 'menus:manage', 'enterprise:manage']
+            };
+
+            // 使用正确的localStorage key
+            localStorage.setItem('txgy_token', mockToken);
+            localStorage.setItem('user_info', JSON.stringify(mockUser));
+
+            updateStatus('login-status', '✅ <strong>登录状态设置成功！</strong><br>现在可以访问管理后台了', 'success');
+            updateStatus('menu-status', '✅ <strong>可以测试菜单显示了！</strong><br>点击上面的链接访问各个页面', 'success');
+            
+            const loginInfo = document.getElementById('login-info');
+            loginInfo.style.display = 'block';
+            loginInfo.textContent = `Token: ${mockToken}\nUser: ${JSON.stringify(mockUser, null, 2)}`;
+            
+            console.log('🔧 强制登录设置完成');
+        }
+
+        function clearLogin() {
+            localStorage.removeItem('txgy_token');
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user_info');
+            
+            updateStatus('login-status', '❌ <strong>登录状态已清除</strong><br>需要重新设置登录状态', 'error');
+            updateStatus('menu-status', '⚠️ <strong>需要先设置登录状态</strong>', 'warning');
+            
+            document.getElementById('login-info').style.display = 'none';
+            console.log('🔧 登录状态已清除');
+        }
+
+        function checkLoginStatus() {
+            const token = localStorage.getItem('txgy_token') || localStorage.getItem('auth_token');
+            const userInfo = localStorage.getItem('user_info');
+            
+            if (token && userInfo) {
+                updateStatus('login-status', '✅ <strong>已登录</strong><br>检测到有效的登录状态', 'success');
+                const loginInfo = document.getElementById('login-info');
+                loginInfo.style.display = 'block';
+                loginInfo.textContent = `Token: ${token}\nUser Info: ${userInfo}`;
+            } else {
+                updateStatus('login-status', '❌ <strong>未登录</strong><br>未检测到有效的登录状态', 'error');
+                document.getElementById('login-info').style.display = 'none';
+            }
+        }
+
+        function openMenuManagement() {
+            window.open('/admin/menus', '_blank');
+            updateStatus('management-status', '✅ <strong>菜单管理页面已打开</strong><br>请在新窗口中测试菜单管理功能', 'success');
+        }
+
+        function openConsoleDebug() {
+            alert('请按F12打开浏览器开发者工具，在Console标签页中查看调试信息');
+            updateStatus('debug-status', '🔧 <strong>请查看浏览器控制台</strong><br>按F12打开开发者工具查看详细日志', 'info');
+        }
+
+        function checkBrowserStorage() {
+            const debugInfo = document.getElementById('debug-info');
+            debugInfo.style.display = 'block';
+            
+            const storageInfo = {
+                'txgy_token': localStorage.getItem('txgy_token'),
+                'auth_token': localStorage.getItem('auth_token'),
+                'user_info': localStorage.getItem('user_info')
+            };
+            
+            debugInfo.textContent = 'LocalStorage内容:\n' + JSON.stringify(storageInfo, null, 2);
+            updateStatus('debug-status', '💾 <strong>浏览器存储信息已显示</strong>', 'info');
+        }
+
+        function testNetworkRequests() {
+            updateStatus('debug-status', '🌐 <strong>请在Network标签页中检查网络请求</strong><br>特别关注API请求的状态码和响应', 'info');
+            alert('请在浏览器开发者工具的Network标签页中检查网络请求');
+        }
+
+        // 页面加载时自动检查登录状态
+        window.onload = function() {
+            checkLoginStatus();
+        };
+    </script>
+</body>
+</html>

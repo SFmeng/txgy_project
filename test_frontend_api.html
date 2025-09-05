@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API测试</title>
+</head>
+<body>
+    <h1>防腐保温智慧平台 - API测试</h1>
+    
+    <div>
+        <h2>登录测试</h2>
+        <button onclick="testLogin()">测试登录</button>
+        <div id="loginResult"></div>
+    </div>
+    
+    <div>
+        <h2>注册测试</h2>
+        <button onclick="testRegister()">测试注册</button>
+        <div id="registerResult"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000/api/v1';
+        
+        async function testLogin() {
+            const loginData = {
+                username: 'admin',
+                password: 'admin123456',
+                login_type: 'password'
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/login/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(loginData)
+                });
+                
+                const result = await response.text();
+                document.getElementById('loginResult').innerHTML = 
+                    `<p>状态: ${response.status}</p><pre>${result}</pre>`;
+                    
+            } catch (error) {
+                document.getElementById('loginResult').innerHTML = 
+                    `<p style="color: red;">错误: ${error.message}</p>`;
+            }
+        }
+        
+        async function testRegister() {
+            const registerData = {
+                username: 'testuser2',
+                email: 'test2@example.com',
+                phone: '13800138001',
+                password: 'test123456',
+                password_confirm: 'test123456',
+                user_type: 'enterprise',
+                real_name: '测试用户2',
+                enterprise_info: {
+                    company_name: '测试公司2',
+                    company_type: 'supplier'
+                }
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/register/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(registerData)
+                });
+                
+                const result = await response.text();
+                document.getElementById('registerResult').innerHTML = 
+                    `<p>状态: ${response.status}</p><pre>${result}</pre>`;
+                    
+            } catch (error) {
+                document.getElementById('registerResult').innerHTML = 
+                    `<p style="color: red;">错误: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

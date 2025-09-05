@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理页面美化展示</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .title {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: #6b7280;
+            margin-bottom: 40px;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .demo-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .demo-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .card-description {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .card-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .card-features li {
+            padding: 8px 0;
+            color: #374151;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .card-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .demo-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 16px;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .features-section {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            margin-top: 40px;
+        }
+
+        .features-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin: 0 auto 16px;
+        }
+
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .feature-desc {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .title {
+                font-size: 36px;
+            }
+            
+            .container {
+                padding: 20px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">管理页面美化展示</h1>
+            <p class="subtitle">工业互联网企业级管理后台设计</p>
+        </div>
+
+        <div class="demo-grid">
+            <div class="demo-card">
+                <div class="card-header">
+                    <div class="card-icon">👥</div>
+                    <h3 class="card-title">角色管理</h3>
+                </div>
+                <p class="card-description">
+                    现代化的角色权限管理界面，支持树形权限分配和批量操作。
+                </p>
+                <ul class="card-features">
+                    <li>蓝色科技主题设计</li>
+                    <li>权限树形结构展示</li>
+                    <li>渐变按钮和卡片效果</li>
+                    <li>响应式布局适配</li>
+                </ul>
+                <a href="http://169.254.119.98:3002/admin/roles" class="demo-button" target="_blank">
+                    查看角色管理
+                </a>
+            </div>
+
+            <div class="demo-card">
+                <div class="card-header">
+                    <div class="card-icon">👤</div>
+                    <h3 class="card-title">用户管理</h3>
+                </div>
+                <p class="card-description">
+                    企业级用户管理系统，支持多条件筛选和批量角色分配。
+                </p>
+                <ul class="card-features">
+                    <li>用户类型标签美化</li>
+                    <li>批量操作状态管理</li>
+                    <li>企业认证快捷入口</li>
+                    <li>统计信息实时显示</li>
+                </ul>
+                <a href="http://169.254.119.98:3002/admin/users" class="demo-button" target="_blank">
+                    查看用户管理
+                </a>
+            </div>
+
+            <div class="demo-card">
+                <div class="card-header">
+                    <div class="card-icon">📋</div>
+                    <h3 class="card-title">菜单管理</h3>
+                </div>
+                <p class="card-description">
+                    树形菜单结构管理，支持拖拽排序和层级可视化展示。
+                </p>
+                <ul class="card-features">
+                    <li>树形表格美化设计</li>
+                    <li>代码高亮显示</li>
+                    <li>展开收起动画效果</li>
+                    <li>菜单图标彩色展示</li>
+                </ul>
+                <a href="http://169.254.119.98:3002/admin/menus" class="demo-button" target="_blank">
+                    查看菜单管理
+                </a>
+            </div>
+        </div>
+
+        <div class="features-section">
+            <h2 class="features-title">设计特色</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🎨</div>
+                    <h3 class="feature-title">现代化设计</h3>
+                    <p class="feature-desc">采用蓝色科技主题，渐变背景和卡片设计，提升视觉体验</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">交互体验</h3>
+                    <p class="feature-desc">丰富的悬停效果、动画过渡和状态反馈，提升操作体验</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📱</div>
+                    <h3 class="feature-title">响应式布局</h3>
+                    <p class="feature-desc">适配各种屏幕尺寸，确保在不同设备上的最佳显示效果</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔧</div>
+                    <h3 class="feature-title">组件统一</h3>
+                    <p class="feature-desc">统一的按钮、表格、对话框样式，保持整体设计一致性</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

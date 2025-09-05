@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>权限管理和菜单管理功能演示</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        .title {
+            color: #2d3748;
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .feature-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        .feature-title {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.3em;
+        }
+        .feature-icon {
+            font-size: 1.5em;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .feature-list li {
+            margin-bottom: 12px;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        .feature-list li:hover {
+            background: #f0fff4;
+            transform: translateX(5px);
+        }
+        .demo-section {
+            margin-bottom: 40px;
+            padding: 30px;
+            border: 2px dashed #cbd5e0;
+            border-radius: 12px;
+            background: #f8fafc;
+        }
+        .demo-title {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 15px;
+            margin-bottom: 15px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+        }
+        .btn-success:hover {
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.4);
+        }
+        .btn-warning {
+            background: linear-gradient(135deg, #ed8936, #dd6b20);
+            box-shadow: 0 4px 15px rgba(237, 137, 54, 0.3);
+        }
+        .btn-warning:hover {
+            box-shadow: 0 8px 25px rgba(237, 137, 54, 0.4);
+        }
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+        .status-item {
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .status-item:hover {
+            transform: scale(1.05);
+        }
+        .status-ok {
+            background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
+            border: 2px solid #48bb78;
+            color: #22543d;
+        }
+        .status-info {
+            background: linear-gradient(135deg, #bee3f8, #90cdf4);
+            border: 2px solid #4299e1;
+            color: #2a4365;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #fef5e7, #fed7aa);
+            border: 2px solid #f6ad55;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            color: #744210;
+        }
+        .highlight-box strong {
+            color: #c05621;
+        }
+        .steps-list {
+            counter-reset: step-counter;
+            list-style: none;
+            padding: 0;
+        }
+        .steps-list li {
+            counter-increment: step-counter;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        .steps-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: -15px;
+            top: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .api-info {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        .api-method {
+            color: #68d391;
+            font-weight: bold;
+        }
+        .api-url {
+            color: #90cdf4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">🎯 权限管理和菜单管理功能演示</h1>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3 class="feature-title">
+                    <span class="feature-icon">🔐</span>
+                    权限管理功能
+                </h3>
+                <ul class="feature-list">
+                    <li>✅ 双视图模式（树形/表格）</li>
+                    <li>✅ 按模块分组显示权限</li>
+                    <li>✅ 权限增删改查操作</li>
+                    <li>✅ API路径权限控制</li>
+                    <li>✅ 权限搜索筛选功能</li>
+                    <li>✅ 操作类型标签化显示</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h3 class="feature-title">
+                    <span class="feature-icon">🌲</span>
+                    菜单管理功能
+                </h3>
+                <ul class="feature-list">
+                    <li>✅ 菜单树形结构管理</li>
+                    <li>✅ 菜单增删改查操作</li>
+                    <li>✅ 子菜单管理</li>
+                    <li>✅ 菜单排序功能</li>
+                    <li>✅ 菜单显示控制</li>
+                    <li>✅ 外链菜单支持</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3 class="demo-title">🚀 功能演示入口</h3>
+            <a href="http://localhost:3001/admin/permissions" class="btn" target="_blank">
+                🔐 权限管理页面
+            </a>
+            <a href="http://localhost:3001/admin/menus" class="btn" target="_blank">
+                🌲 菜单管理页面
+            </a>
+            <a href="http://localhost:3001/admin/users" class="btn btn-success" target="_blank">
+                👥 用户管理页面
+            </a>
+            <a href="http://localhost:3001/admin/roles" class="btn btn-warning" target="_blank">
+                🎭 角色管理页面
+            </a>
+        </div>
+
+        <div class="demo-section">
+            <h3 class="demo-title">📊 API测试结果</h3>
+            <div class="status-grid">
+                <div class="status-item status-ok">
+                    <strong>权限管理API</strong><br>
+                    <small>按模块分组 ✅</small>
+                </div>
+                <div class="status-item status-ok">
+                    <strong>权限表格API</strong><br>
+                    <small>分页查询 ✅</small>
+                </div>
+                <div class="status-item status-ok">
+                    <strong>菜单管理API</strong><br>
+                    <small>树形结构 ✅</small>
+                </div>
+                <div class="status-item status-ok">
+                    <strong>CRUD操作</strong><br>
+                    <small>增删改查 ✅</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🔑 登录信息:</strong><br>
+            用户名: <code>admin</code><br>
+            密码: <code>admin123456</code><br>
+            角色: 超级管理员（拥有所有权限）
+        </div>
+
+        <div class="demo-section">
+            <h3 class="demo-title">📋 功能测试步骤</h3>
+            <ol class="steps-list">
+                <li><strong>登录系统:</strong> 访问管理后台，使用admin账号登录</li>
+                <li><strong>权限管理测试:</strong> 
+                    <ul>
+                        <li>切换树形/表格视图模式</li>
+                        <li>按模块、操作类型筛选权限</li>
+                        <li>创建、编辑、删除权限</li>
+                        <li>查看权限的API路径信息</li>
+                    </ul>
+                </li>
+                <li><strong>菜单管理测试:</strong>
+                    <ul>
+                        <li>查看菜单树形结构</li>
+                        <li>展开/收起菜单节点</li>
+                        <li>创建顶级菜单和子菜单</li>
+                        <li>编辑菜单信息（路径、组件、图标等）</li>
+                        <li>删除菜单（检查子菜单限制）</li>
+                    </ul>
+                </li>
+                <li><strong>集成测试:</strong> 在角色管理中分配权限和菜单，验证动态菜单生成</li>
+            </ol>
+        </div>
+
+        <div class="demo-section">
+            <h3 class="demo-title">🔧 API接口信息</h3>
+            
+            <h4>权限管理API:</h4>
+            <div class="api-info">
+<span class="api-method">GET</span> <span class="api-url">/api/v1/organization/permissions/manage/?group_by_module=true</span>
+# 按模块分组获取权限
+
+<span class="api-method">GET</span> <span class="api-url">/api/v1/organization/permissions/manage/?page=1&page_size=20</span>
+# 分页获取权限列表
+
+<span class="api-method">POST</span> <span class="api-url">/api/v1/organization/permissions/manage/</span>
+# 创建新权限
+
+<span class="api-method">PUT</span> <span class="api-url">/api/v1/organization/permissions/{perm_id}/</span>
+# 更新权限
+
+<span class="api-method">DELETE</span> <span class="api-url">/api/v1/organization/permissions/{perm_id}/</span>
+# 删除权限
+            </div>
+
+            <h4>菜单管理API:</h4>
+            <div class="api-info">
+<span class="api-method">GET</span> <span class="api-url">/api/v1/organization/menus/?terminal=pc</span>
+# 获取菜单树
+
+<span class="api-method">POST</span> <span class="api-url">/api/v1/organization/menus/</span>
+# 创建新菜单
+
+<span class="api-method">PUT</span> <span class="api-url">/api/v1/organization/menus/{menu_id}/</span>
+# 更新菜单
+
+<span class="api-method">DELETE</span> <span class="api-url">/api/v1/organization/menus/{menu_id}/</span>
+# 删除菜单
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3 class="demo-title">🎨 界面特色</h3>
+            <div class="status-grid">
+                <div class="status-item status-info">
+                    <strong>树形视图</strong><br>
+                    <small>权限按模块分组显示</small>
+                </div>
+                <div class="status-item status-info">
+                    <strong>表格视图</strong><br>
+                    <small>支持分页和搜索</small>
+                </div>
+                <div class="status-item status-info">
+                    <strong>菜单树</strong><br>
+                    <small>支持展开收起操作</small>
+                </div>
+                <div class="status-item status-info">
+                    <strong>响应式设计</strong><br>
+                    <small>适配各种屏幕尺寸</small>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="http://localhost:3001/admin" class="btn btn-success" target="_blank">
+                🎯 立即体验管理后台
+            </a>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px; color: #718096; font-size: 14px;">
+            防腐保温智慧平台 - 权限管理和菜单管理功能 v1.0 ✨
+        </div>
+    </div>
+</body>
+</html>

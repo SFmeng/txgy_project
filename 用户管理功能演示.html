@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户管理功能演示</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        .title {
+            color: #2d3748;
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .success-banner {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        .feature-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #48bb78, #38a169);
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        .feature-title {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2em;
+        }
+        .feature-icon {
+            font-size: 1.4em;
+            color: #48bb78;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 15px;
+            margin-bottom: 15px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+        }
+        .btn-success:hover {
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.4);
+        }
+        .btn-warning {
+            background: linear-gradient(135deg, #ed8936, #dd6b20);
+            box-shadow: 0 4px 15px rgba(237, 137, 54, 0.3);
+        }
+        .btn-warning:hover {
+            box-shadow: 0 8px 25px rgba(237, 137, 54, 0.4);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stats-item {
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .stats-item:hover {
+            transform: scale(1.05);
+        }
+        .stats-ok {
+            background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
+            border: 2px solid #48bb78;
+            color: #22543d;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #fef5e7, #fed7aa);
+            border: 2px solid #f6ad55;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            color: #744210;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            border: 2px solid #48bb78;
+            border-radius: 12px;
+            background: #f0fff4;
+        }
+        .test-title {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">👥 用户管理功能演示</h1>
+        
+        <div class="success-banner">
+            ✅ 用户管理功能实现完成！包含用户列表、企业认证和用户统计
+        </div>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3 class="feature-title">
+                    <span class="feature-icon">👥</span>
+                    用户列表管理
+                </h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 8px;">✅ 用户增删改查功能</li>
+                    <li style="margin-bottom: 8px;">✅ 用户类型筛选（企业/个人）</li>
+                    <li style="margin-bottom: 8px;">✅ 用户状态管理</li>
+                    <li style="margin-bottom: 8px;">✅ 批量角色分配</li>
+                    <li style="margin-bottom: 8px;">✅ 用户信息详细查看</li>
+                </ul>
+                <a href="http://localhost:3001/admin/users" class="btn" target="_blank">
+                    进入用户管理
+                </a>
+            </div>
+
+            <div class="feature-card">
+                <h3 class="feature-title">
+                    <span class="feature-icon">🏢</span>
+                    企业认证管理
+                </h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 8px;">✅ 企业认证申请审核</li>
+                    <li style="margin-bottom: 8px;">✅ 认证状态管理</li>
+                    <li style="margin-bottom: 8px;">✅ 企业信息详细查看</li>
+                    <li style="margin-bottom: 8px;">✅ 批量审核操作</li>
+                    <li style="margin-bottom: 8px;">✅ 认证材料查看</li>
+                </ul>
+                <a href="http://localhost:3001/admin/enterprise" class="btn btn-warning" target="_blank">
+                    进入企业认证
+                </a>
+            </div>
+
+            <div class="feature-card">
+                <h3 class="feature-title">
+                    <span class="feature-icon">📊</span>
+                    用户统计分析
+                </h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 8px;">✅ 用户数量统计</li>
+                    <li style="margin-bottom: 8px;">✅ 用户类型分布</li>
+                    <li style="margin-bottom: 8px;">✅ 企业认证状态统计</li>
+                    <li style="margin-bottom: 8px;">✅ 最近注册用户</li>
+                    <li style="margin-bottom: 8px;">✅ 数据可视化图表</li>
+                </ul>
+                <a href="http://localhost:3001/admin/user-stats" class="btn btn-success" target="_blank">
+                    进入用户统计
+                </a>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">📊 当前系统数据</h3>
+            <div class="stats-grid">
+                <div class="stats-item stats-ok">
+                    <strong>总用户数</strong><br>
+                    <span style="font-size: 24px;">7</span>
+                </div>
+                <div class="stats-item stats-ok">
+                    <strong>企业用户</strong><br>
+                    <span style="font-size: 24px;">5</span>
+                </div>
+                <div class="stats-item stats-ok">
+                    <strong>个人用户</strong><br>
+                    <span style="font-size: 24px;">1</span>
+                </div>
+                <div class="stats-item stats-ok">
+                    <strong>待认证企业</strong><br>
+                    <span style="font-size: 24px;">5</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">🚀 功能演示入口</h3>
+            <a href="http://localhost:3001/admin" class="btn btn-success" target="_blank">
+                🏠 管理后台首页
+            </a>
+            <a href="http://localhost:3001/admin/users" class="btn" target="_blank">
+                👥 用户列表管理
+            </a>
+            <a href="http://localhost:3001/admin/enterprise" class="btn btn-warning" target="_blank">
+                🏢 企业认证管理
+            </a>
+            <a href="http://localhost:3001/admin/user-stats" class="btn btn-success" target="_blank">
+                📊 用户统计分析
+            </a>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🔑 登录信息:</strong><br>
+            用户名: <code>admin</code><br>
+            密码: <code>admin123456</code><br>
+            角色: 超级管理员（拥有所有权限）
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">🧪 功能测试指南</h3>
+            
+            <h4>👥 用户列表管理测试</h4>
+            <ol>
+                <li>进入用户管理页面</li>
+                <li>查看用户列表，包含企业和个人用户</li>
+                <li>测试用户搜索和筛选功能</li>
+                <li>测试新增用户功能</li>
+                <li>测试用户编辑和删除功能</li>
+                <li>测试批量角色分配功能</li>
+            </ol>
+
+            <h4>🏢 企业认证管理测试</h4>
+            <ol>
+                <li>点击用户管理页面的"企业认证"按钮</li>
+                <li>查看企业认证列表</li>
+                <li>测试企业认证状态筛选</li>
+                <li>点击"查看"按钮查看企业详情</li>
+                <li>测试认证通过/拒绝功能</li>
+                <li>测试批量审核功能</li>
+            </ol>
+
+            <h4>📊 用户统计分析测试</h4>
+            <ol>
+                <li>进入用户统计页面</li>
+                <li>查看用户数量统计卡片</li>
+                <li>查看企业认证状态统计</li>
+                <li>查看最近注册用户列表</li>
+                <li>验证数据的准确性</li>
+            </ol>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">🌲 左侧菜单结构</h3>
+            <div style="background: #1a202c; color: #e2e8f0; padding: 20px; border-radius: 8px; font-family: monospace;">
+<span style="color: #68d391;">用户管理</span> <span style="color: #90cdf4;">(/users)</span>
+├── <span style="color: #68d391;">用户列表</span> <span style="color: #90cdf4;">(/admin/users)</span>
+├── <span style="color: #68d391;">企业认证</span> <span style="color: #90cdf4;">(/admin/enterprise)</span>
+└── <span style="color: #68d391;">用户统计</span> <span style="color: #90cdf4;">(/admin/user-stats)</span>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">🔧 技术实现</h3>
+            
+            <h4>后端API</h4>
+            <ul>
+                <li><code>GET /api/v1/auth/users/</code> - 获取用户列表</li>
+                <li><code>POST /api/v1/auth/users/</code> - 创建用户</li>
+                <li><code>PUT /api/v1/auth/users/{id}/</code> - 更新用户</li>
+                <li><code>DELETE /api/v1/auth/users/{id}/</code> - 删除用户</li>
+                <li><code>POST /api/v1/auth/enterprise/verify/</code> - 企业认证审核</li>
+            </ul>
+
+            <h4>前端页面</h4>
+            <ul>
+                <li><code>Users.vue</code> - 用户列表管理页面</li>
+                <li><code>EnterpriseVerify.vue</code> - 企业认证管理页面</li>
+                <li><code>UserStats.vue</code> - 用户统计分析页面</li>
+            </ul>
+
+            <h4>核心功能</h4>
+            <ul>
+                <li>✅ 用户CRUD操作</li>
+                <li>✅ 企业认证审核流程</li>
+                <li>✅ 用户统计数据展示</li>
+                <li>✅ 批量操作功能</li>
+                <li>✅ 搜索筛选功能</li>
+                <li>✅ 响应式设计</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">📋 测试数据</h3>
+            <p><strong>当前系统中的测试数据：</strong></p>
+            <ul>
+                <li><strong>总用户数</strong>: 7个</li>
+                <li><strong>企业用户</strong>: 5个（123, newuser2730, newuser2906, testuser2, testuser）</li>
+                <li><strong>个人用户</strong>: 1个</li>
+                <li><strong>管理员用户</strong>: 1个（admin）</li>
+                <li><strong>待认证企业</strong>: 5个</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="http://localhost:3001/admin" class="btn btn-success" target="_blank">
+                🎯 立即体验用户管理功能
+            </a>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px; color: #718096; font-size: 14px;">
+            防腐保温智慧平台 - 用户管理功能 v1.0 ✨<br>
+            功能完整，体验流畅
+        </div>
+    </div>
+</body>
+</html>

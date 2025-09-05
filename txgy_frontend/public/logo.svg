@@ -1,0 +1,12 @@
+<svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="120" height="40" rx="8" fill="#3B82F6"/>
+  
+  <!-- 图标部分 -->
+  <circle cx="20" cy="20" r="8" fill="#FFFFFF" opacity="0.9"/>
+  <rect x="16" y="16" width="8" height="8" rx="2" fill="#3B82F6"/>
+  
+  <!-- 文字部分 -->
+  <text x="35" y="16" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="10" font-weight="bold">防腐保温</text>
+  <text x="35" y="28" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="8" opacity="0.9">智慧平台</text>
+</svg>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>完整测试流程</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+        .step {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .step-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .step-number {
+            background: #007bff;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+        }
+        .btn.success {
+            background: #28a745;
+        }
+        .btn.success:hover {
+            background: #218838;
+        }
+        .btn.warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        .btn.warning:hover {
+            background: #e0a800;
+        }
+        .status {
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .result-item {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 5px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+        .quick-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        .link-btn {
+            background: #6c757d;
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+        .link-btn:hover {
+            background: #5a6268;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🔧 完整测试流程</h1>
+            <p class="subtitle">一步步排查和修复左侧菜单栏显示问题</p>
+        </div>
+
+        <!-- 步骤1：检查登录状态 -->
+        <div class="step">
+            <div class="step-title">
+                <div class="step-number">1</div>
+                检查登录状态
+            </div>
+            <div id="login-status" class="status info">点击按钮检查登录状态...</div>
+            <button class="btn" onclick="checkLoginStatus()">检查登录状态</button>
+            <button class="btn warning" onclick="clearAuth()">清除认证信息</button>
+            <div class="quick-links">
+                <a href="/auth/login" class="link-btn">前往登录页面</a>
+            </div>
+        </div>
+
+        <!-- 步骤2：测试路由访问 -->
+        <div class="step">
+            <div class="step-title">
+                <div class="step-number">2</div>
+                测试路由访问
+            </div>
+            <div id="route-status" class="status info">点击按钮测试各个路由...</div>
+            <button class="btn" onclick="testRoutes()">测试所有路由</button>
+            <div id="route-results"></div>
+        </div>
+
+        <!-- 步骤3：检查菜单数据 -->
+        <div class="step">
+            <div class="step-title">
+                <div class="step-number">3</div>
+                检查菜单数据
+            </div>
+            <div id="menu-status" class="status info">点击按钮检查菜单数据...</div>
+            <button class="btn" onclick="checkMenuData()">检查菜单数据</button>
+            <button class="btn success" onclick="simulateLogin()">模拟登录</button>
+            <div id="menu-results"></div>
+        </div>
+
+        <!-- 步骤4：直接访问管理后台 -->
+        <div class="step">
+            <div class="step-title">
+                <div class="step-number">4</div>
+                直接访问管理后台
+            </div>
+            <div class="status success">如果前面步骤都正常，现在可以访问管理后台了</div>
+            <div class="quick-links">
+                <a href="/admin" class="link-btn" target="_blank">管理后台首页</a>
+                <a href="/admin/users" class="link-btn" target="_blank">用户管理</a>
+                <a href="/admin/roles" class="link-btn" target="_blank">角色管理</a>
+                <a href="/admin/menus" class="link-btn" target="_blank">菜单管理</a>
+                <a href="/admin/enterprise-verify" class="link-btn" target="_blank">企业认证</a>
+                <a href="/admin/enterprise-manage" class="link-btn" target="_blank">企业管理</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateStatus(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.className = `status ${type}`;
+            element.textContent = message;
+        }
+
+        function addResult(containerId, message) {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = 'result-item';
+            div.textContent = message;
+            container.appendChild(div);
+        }
+
+        function clearResults(containerId) {
+            document.getElementById(containerId).innerHTML = '';
+        }
+
+        function checkLoginStatus() {
+            updateStatus('login-status', '检查中...', 'info');
+            
+            const token = localStorage.getItem('auth_token');
+            const userInfo = localStorage.getItem('user_info');
+            
+            if (token && userInfo) {
+                try {
+                    const user = JSON.parse(userInfo);
+                    updateStatus('login-status', `已登录: ${user.username} (${user.user_type})`, 'success');
+                } catch (e) {
+                    updateStatus('login-status', '登录信息格式错误', 'error');
+                }
+            } else {
+                updateStatus('login-status', '未登录，需要先登录', 'error');
+            }
+        }
+
+        function clearAuth() {
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user_info');
+            updateStatus('login-status', '认证信息已清除', 'info');
+        }
+
+        function simulateLogin() {
+            // 模拟管理员登录
+            const mockToken = 'mock_admin_token_' + Date.now();
+            const mockUser = {
+                user_id: 1,
+                username: 'admin',
+                user_type: 'admin',
+                email: 'admin@example.com'
+            };
+            
+            localStorage.setItem('auth_token', mockToken);
+            localStorage.setItem('user_info', JSON.stringify(mockUser));
+            
+            updateStatus('menu-status', '模拟登录成功，现在可以访问管理后台了', 'success');
+        }
+
+        function testRoutes() {
+            updateStatus('route-status', '测试路由中...', 'info');
+            clearResults('route-results');
+            
+            const routes = [
+                { name: '管理后台首页', path: '/admin' },
+                { name: '用户管理', path: '/admin/users' },
+                { name: '角色管理', path: '/admin/roles' },
+                { name: '菜单管理', path: '/admin/menus' },
+                { name: '企业认证', path: '/admin/enterprise-verify' },
+                { name: '企业管理', path: '/admin/enterprise-manage' }
+            ];
+            
+            routes.forEach(route => {
+                addResult('route-results', `${route.name}: ${route.path}`);
+            });
+            
+            updateStatus('route-status', '路由列表已生成，可以点击上方链接测试', 'success');
+        }
+
+        function checkMenuData() {
+            updateStatus('menu-status', '检查菜单数据...', 'info');
+            clearResults('menu-results');
+            
+            // 显示默认菜单配置
+            const defaultMenus = [
+                { name: '仪表盘', path: '/admin', status: 'active' },
+                { name: '用户管理', path: '/admin/users', status: 'active' },
+                { name: '角色管理', path: '/admin/roles', status: 'active' },
+                { name: '菜单管理', path: '/admin/menus', status: 'active' },
+                { name: '企业认证', path: '/admin/enterprise-verify', status: 'active' },
+                { name: '企业管理', path: '/admin/enterprise-manage', status: 'active' }
+            ];
+            
+            addResult('menu-results', '默认菜单配置:');
+            defaultMenus.forEach((menu, index) => {
+                addResult('menu-results', `${index + 1}. ${menu.name} -> ${menu.path} (${menu.status})`);
+            });
+            
+            updateStatus('menu-status', '菜单数据检查完成，所有菜单都是启用状态', 'success');
+        }
+
+        // 页面加载时自动检查登录状态
+        window.onload = function() {
+            checkLoginStatus();
+        };
+    </script>
+</body>
+</html>

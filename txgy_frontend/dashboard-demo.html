@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理仪表盘展示</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .title {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: #6b7280;
+            margin-bottom: 40px;
+        }
+
+        .status-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .status-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            margin: 0 auto 24px;
+        }
+
+        .status-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .status-desc {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .demo-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 0 8px;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .demo-button.secondary {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .demo-button.secondary:hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .feature-desc {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .login-prompt {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 1px solid #f59e0b;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 24px;
+            text-align: center;
+        }
+
+        .login-prompt-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 8px;
+        }
+
+        .login-prompt-desc {
+            color: #b45309;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .stats-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .stat-preview {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 36px;
+            }
+            
+            .container {
+                padding: 20px 16px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-preview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">管理仪表盘</h1>
+            <p class="subtitle">实时监控系统运行状态和数据统计</p>
+        </div>
+
+        <div class="status-card">
+            <div class="status-icon">📊</div>
+            <h2 class="status-title">仪表盘已完成美化</h2>
+            <p class="status-desc">
+                管理仪表盘已经完成现代化改造，采用蓝色科技主题设计，提供实时数据监控和快捷操作功能。
+                <br>包含欢迎区域、统计卡片、图表展示、快捷操作、最新动态和系统信息等模块。
+            </p>
+            
+            <div class="stats-preview">
+                <div class="stat-preview">
+                    <div class="stat-number">1,234</div>
+                    <div class="stat-label">今日访问</div>
+                </div>
+                <div class="stat-preview">
+                    <div class="stat-number">89</div>
+                    <div class="stat-label">活跃用户</div>
+                </div>
+                <div class="stat-preview">
+                    <div class="stat-number">56</div>
+                    <div class="stat-label">新增订单</div>
+                </div>
+                <div class="stat-preview">
+                    <div class="stat-number">2,847</div>
+                    <div class="stat-label">总用户数</div>
+                </div>
+            </div>
+            
+            <div>
+                <a href="http://169.254.119.98:3002/auth/login" class="demo-button">
+                    登录查看仪表盘
+                </a>
+                <a href="http://169.254.119.98:3002/admin-demo.html" class="demo-button secondary">
+                    管理页面展示
+                </a>
+            </div>
+
+            <div class="login-prompt">
+                <div class="login-prompt-title">访问说明</div>
+                <div class="login-prompt-desc">
+                    请先登录管理后台，登录后会自动跳转到仪表盘页面
+                </div>
+                <div style="font-size: 12px; color: #92400e;">
+                    测试账号：admin / admin123
+                </div>
+            </div>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">👋</div>
+                <h3 class="feature-title">个性化欢迎</h3>
+                <p class="feature-desc">
+                    显示用户头像、个性化问候语、当前时间和天气信息，营造温馨的工作氛围。
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h3 class="feature-title">实时统计</h3>
+                <p class="feature-desc">
+                    今日访问量、活跃用户数、新增订单等关键指标实时展示，支持趋势分析。
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3 class="feature-title">数据可视化</h3>
+                <p class="feature-desc">
+                    总用户数、订单数、收入、消息等核心数据以卡片形式展示，包含趋势指标。
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3 class="feature-title">快捷操作</h3>
+                <p class="feature-desc">
+                    用户管理、角色管理、权限管理、系统设置等常用功能的快捷入口。
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h3 class="feature-title">最新动态</h3>
+                <p class="feature-desc">
+                    系统操作日志、用户活动记录、重要事件通知等最新动态实时展示。
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🖥️</div>
+                <h3 class="feature-title">系统监控</h3>
+                <p class="feature-desc">
+                    服务器状态、数据库连接、缓存状态、系统版本等关键信息监控。
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

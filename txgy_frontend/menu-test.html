@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>菜单加载测试 - 防腐保温智慧平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .test-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 1000px;
+            margin: 0 auto;
+            min-height: 600px;
+        }
+
+        .test-header {
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .test-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .test-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .test-content {
+            padding: 40px;
+        }
+
+        .status-section {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .status-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .test-info {
+            background: #e0f2fe;
+            border: 2px solid #0284c7;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .test-info-title {
+            font-weight: 600;
+            color: #0c4a6e;
+            margin-bottom: 10px;
+        }
+
+        .test-info-desc {
+            color: #0c4a6e;
+            line-height: 1.6;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .action-btn.secondary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .action-btn.secondary:hover {
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .feature-item:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            background: #22c55e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .feature-text {
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .test-container {
+                margin: 10px;
+                border-radius: 16px;
+            }
+
+            .test-header {
+                padding: 20px;
+            }
+
+            .test-title {
+                font-size: 24px;
+            }
+
+            .test-content {
+                padding: 20px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .action-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-header">
+            <h1 class="test-title">🧪 菜单加载测试</h1>
+            <p class="test-subtitle">
+                验证用户默认菜单权限配置是否正确
+            </p>
+        </div>
+
+        <div class="test-content">
+            <div class="status-section">
+                <div class="status-title">
+                    <div class="status-indicator"></div>
+                    菜单配置状态
+                </div>
+                
+                <div class="test-info">
+                    <div class="test-info-title">✅ 配置已优化</div>
+                    <div class="test-info-desc">
+                        已修改菜单加载逻辑，确保用户登录后默认能看到所有功能菜单。
+                        系统会优先使用默认菜单配置，然后尝试从API加载用户特定配置。
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">
+                            <strong>默认菜单权限：</strong>用户登录后默认拥有所有功能菜单的访问权限
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">
+                            <strong>实时菜单控制：</strong>可通过菜单管理页面实时启用/禁用菜单项
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">
+                            <strong>容错机制：</strong>即使API调用失败，也会显示默认菜单确保系统可用
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">
+                            <strong>动态更新：</strong>菜单状态变更会立即反映到左侧导航栏
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">
+                            <strong>完整权限：</strong>包含仪表盘、用户管理、角色管理、菜单管理、企业管理等所有功能
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="test-info">
+                <div class="test-info-title">🎯 测试说明</div>
+                <div class="test-info-desc">
+                    现在用户登录后应该能看到完整的左侧导航菜单，包括：
+                    <br>• 📊 仪表盘
+                    <br>• 👥 用户管理  
+                    <br>• 🔐 角色管理
+                    <br>• 📋 菜单管理
+                    <br>• 🏢 企业管理（包含企业认证和企业管理子菜单）
+                    <br><br>
+                    如果某些菜单不显示，可以通过菜单管理页面检查和调整菜单状态。
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="http://169.254.119.98:3002/admin" class="action-btn">
+                    🏠 进入管理后台
+                </a>
+                <a href="http://169.254.119.98:3002/admin/menus" class="action-btn secondary">
+                    🎛️ 菜单管理
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
